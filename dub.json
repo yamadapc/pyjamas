@@ -1,0 +1,29 @@
+{
+  "name": "pyjamas",
+  "description": "A BDD assertion library for D",
+  "copyright": "Copyright © 2014, Pedro Tacla Yamada",
+  "authors": [
+    "Pedro Tacla Yamada"
+  ],
+  "configurations": [
+    {
+      "name": "pyjamas",
+      "targetType": "library",
+      "sourcePaths": [
+        "source/"
+      ]
+    },
+    {
+      "name": "test",
+      "targetType": "executable",
+      "targetName": "test",
+      "sourcePaths": [
+        "tests/",
+        "source/"
+      ],
+      "dependencies": {
+        "bed": ">=0.0.5"
+      }
+    }
+  ]
+}
