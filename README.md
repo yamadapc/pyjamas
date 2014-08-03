@@ -4,3 +4,11 @@ pyjamas
 - - -
 
 A BDD assertion library for D.
+
+## Example
+```d
+import pyjamas;
+
+10.should.equal(10);
+5.should.not.equal(10);
+```
