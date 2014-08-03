@@ -51,6 +51,15 @@ void main()
           assertThrown!AssertError(a.equal(2));
         });
       });
+
+      describe(".eql", {
+        it("assets whether two ranges are deep equal", {
+          Assertion a;
+          a.value = [ 0, 1, 2, 3 ];
+          a.eql([0, 1, 2, 3]);
+          a.not.eql([0, 1, 2, 6]);
+        });
+      });
     });
   });
 }

@@ -1,4 +1,5 @@
 import std.conv;
+import std.range;
 import std.string;
 import std.stdio;
 import std.variant;
@@ -14,7 +15,7 @@ struct Assertion
 {
   Variant value;
   Variant other;
-  string operator = " be ";
+  string operator = "be";
   bool negated = false;
 }
 
@@ -59,6 +60,22 @@ Variant equal(T)(Assertion a, const T other, string file = __FILE__, size_t line
   a.other = other;
   auto expr = a.value == other;
   a.ok!T(a.value == other);
+  return a.value;
+}
+
+Variant eql(T)
+(Assertion a, const T other, string file = __FILE__, size_t line = __LINE__)
+{
+  a.operator = "deep equal";
+  a.other = other;
+  static if(isForwardRange!T)
+  {
+    foreach(i, v; other)
+    {
+      if(a.value[i] != v) a.ok(false);
+    }
+  }
+
   return a.value;
 }
 
