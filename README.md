@@ -1,6 +1,7 @@
 pyjamas
 =======
 [![Build Status](https://travis-ci.org/yamadapc/pyjamas.svg)](https://travis-ci.org/yamadapc/pyjamas)
+[![Gitter chat](https://badges.gitter.im/yamadapc/pyjamas.png)](https://gitter.im/yamadapc/pyjamas)
 - - -
 
 A BDD assertion library for D.
