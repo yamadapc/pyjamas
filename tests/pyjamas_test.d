@@ -37,6 +37,20 @@ void main()
           assert(a.not.message == "expected 10 to not be false");
         });
       });
+
+      describe(".exist", {
+        it("returns and asserts for existence", {
+          Assertion a1;
+          a1.not.exist;
+          Assertion a2;
+          a2.value = null;
+          a2.not.exist;
+          Assertion a3;
+          a3.value = 10;
+          a3.exist;
+        });
+      });
+
       describe(".True", {
         it("returns and asserts for true", {
           Assertion a;
@@ -47,7 +61,7 @@ void main()
         it("throws for false", {
           Assertion a;
           a.value = false;
-          assertThrown!AssertError(a.be.True);
+          assertThrown!Exception(a.be.True);
         });
       });
 
@@ -62,7 +76,7 @@ void main()
         it("throws for true", {
           Assertion a;
           a.value = true;
-          assertThrown!AssertError(a.be.False);
+          assertThrown!Exception(a.be.False);
         });
       });
 
@@ -72,16 +86,7 @@ void main()
           a.value = 10;
           a.equal(10);
           a.not.equal(5);
-          assertThrown!AssertError(a.equal(2));
-        });
-      });
-
-      describe(".eql", {
-        it("assets whether two ranges are deep equal", {
-          Assertion a;
-          a.value = [ 0, 1, 2, 3 ];
-          a.eql([0, 1, 2, 3]);
-          a.not.eql([0, 1, 2, 6]);
+          assertThrown!Exception(a.equal(2));
         });
       });
     });

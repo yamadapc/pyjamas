@@ -34,11 +34,13 @@ alias id which;
 
 bool True(Assertion a)
 {
+  a.other = true;
   return a.ok(a.value == true);
 }
 
 bool False(Assertion a)
 {
+  a.other = false;
   return !a.ok(a.value == false);
 }
 
@@ -47,60 +49,52 @@ T id(T)(T a)
   return a;
 }
 
-void Throw(T : Throwable = Exception, E)
-(Assertion a, lazy E expr, string file = __FILE__, size_t line = __LINE__)
+void Throw(T : Throwable = Exception, E)(Assertion a,
+                                         lazy E expr,
+                                         string file = __FILE__,
+                                         size_t line = __LINE__)
 {
   a.value = "function";
   a.operator = "throw";
   assertThrown(expr, a.message, file, line);
 }
 
-T ok(T)
-(Assertion a, const T expr, string file = __FILE__, size_t line = __LINE__)
+T ok(T)(Assertion a,
+        const T expr,
+        string file = __FILE__,
+        size_t line = __LINE__)
 {
   if(a.negated ? !expr : expr) return expr;
-  assert(false, a.message);
+  throw new Exception(a.message, file, line);
 }
 
-Variant equal(T)(Assertion a, const T other, string file = __FILE__, size_t line = __LINE__)
+Variant equal(T)(Assertion a,
+                 const T other,
+                 string file = __FILE__,
+                 size_t line = __LINE__)
 {
   a.operator = "equal";
   a.other = other;
   auto expr = a.value == other;
-  a.ok!T(a.value == other);
+  a.ok(a.value == other, file, line);
   return a.value;
 }
 
-Variant eql(T)
-(Assertion a, const T other, string file = __FILE__, size_t line = __LINE__)
-{
-  a.operator = "deep equal";
-  a.other = other;
-  static if(isForwardRange!T)
-  {
-    foreach(i, v; other)
-    {
-      if(a.value[i] != v) a.ok(false);
-    }
-  }
-
-  return a.value;
-}
-
-T exist(T)(Assertion!T a, T value = null)
+Variant exist(Assertion a, string file = __FILE__, size_t line = __LINE__)
 {
   a.operator = "exist";
-  if(!(a.value is null))
+
+  if(!a.value.hasValue)
   {
-    a.ok(true);
-    return a.value;
+    a.ok(false, file, line);
   }
-  else if(!(value is null))
+  else if(a.value.convertsTo!(typeof(null)) &&
+          a.value.get!(typeof(null)) is null)
   {
-    a.ok(true);
-    return value;
+    a.ok(false, file, line);
   }
-  else a.ok;
+
+  return a.value;
 }
 
 string message(Assertion a)
