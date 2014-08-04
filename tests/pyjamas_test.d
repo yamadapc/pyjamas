@@ -13,6 +13,30 @@ void main()
     });
 
     describe("Assertion", {
+      describe(".message", {
+        it("returns the correct message for binary operators", {
+          Assertion a;
+          a.value = 10;
+          a.operator = "equal";
+          a.other = 20;
+          assert(a.message == "expected 10 to equal 20");
+        });
+
+        it("returns the correct message for unary operators", {
+          Assertion a;
+          a.value = "function";
+          a.operator = "throw";
+          assert(a.message == "expected function to throw");
+        });
+
+        it("returns the correct message for negated operators", {
+          Assertion a;
+          a.value = 10;
+          a.operator = "be";
+          a.other = false;
+          assert(a.not.message == "expected 10 to not be false");
+        });
+      });
       describe(".True", {
         it("returns and asserts for true", {
           Assertion a;

@@ -47,6 +47,14 @@ T id(T)(T a)
   return a;
 }
 
+void Throw(T : Throwable = Exception, E)
+(Assertion a, lazy E expr, string file = __FILE__, size_t line = __LINE__)
+{
+  a.value = "function";
+  a.operator = "throw";
+  assertThrown(expr, a.message, file, line);
+}
+
 T ok(T)
 (Assertion a, const T expr, string file = __FILE__, size_t line = __LINE__)
 {
@@ -98,10 +106,10 @@ T exist(T)(Assertion!T a, T value = null)
 string message(Assertion a)
 {
   return format(
-    "expected %s to %s%s %s",
+    "expected %s to %s%s%s",
     a.value.to!string,
     (a.negated ? "not " : ""),
     a.operator,
-    a.other.to!string
+    (a.other.hasValue ? " " ~ a.other.to!string : "")
   );
 }
