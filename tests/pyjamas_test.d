@@ -78,6 +78,13 @@ void main()
           a.not;
           assertThrown!Exception(a.equal(2));
         });
+
+        it("works for ranges", {
+          auto a1 = new Assertion([1, 2, 3, 4]);
+          a1.equal([1, 2, 3, 4]);
+          auto a2 = new Assertion([0, 2, 1]);
+          a2.not.equal([1, 2, 3, 5]);
+        });
       });
 
       describe(".Throw", {
