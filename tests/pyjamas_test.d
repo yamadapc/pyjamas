@@ -15,23 +15,20 @@ void main()
     describe("Assertion", {
       describe(".message", {
         it("returns the correct message for binary operators", {
-          Assertion a;
-          a.value = 10;
+          auto a = new Assertion(10);
           a.operator = "equal";
           a.other = 20;
           assert(a.message == "expected 10 to equal 20");
         });
 
         it("returns the correct message for unary operators", {
-          Assertion a;
-          a.value = "function";
+          auto a = new Assertion("function");
           a.operator = "throw";
           assert(a.message == "expected function to throw");
         });
 
         it("returns the correct message for negated operators", {
-          Assertion a;
-          a.value = 10;
+          auto a = new Assertion(10);
           a.operator = "be";
           a.other = false;
           assert(a.not.message == "expected 10 to not be false");
@@ -40,53 +37,61 @@ void main()
 
       describe(".exist", {
         it("returns and asserts for existence", {
-          Assertion a1;
+          auto a1 = new Assertion;
           a1.not.exist;
-          Assertion a2;
-          a2.value = null;
+          auto a2 = new Assertion(null);
           a2.not.exist;
-          Assertion a3;
-          a3.value = 10;
+          auto a3 = new Assertion(10);
           a3.exist;
         });
       });
 
       describe(".True", {
         it("returns and asserts for true", {
-          Assertion a;
-          a.value = true;
+          auto a = new Assertion(true);
           assert(a.be.True);
         });
 
         it("throws for false", {
-          Assertion a;
-          a.value = false;
+          auto a = new Assertion(false);
           assertThrown!Exception(a.be.True);
         });
       });
 
       describe(".False", {
         it("returns and asserts for false", {
-          Assertion a;
-          a.value = false;
-          import std.stdio;
+          auto a = new Assertion(false);
           assert(!a.be.False);
         });
 
         it("throws for true", {
-          Assertion a;
-          a.value = true;
+          auto a = new Assertion(true);
           assertThrown!Exception(a.be.False);
         });
       });
 
       describe(".equal", {
         it("asserts whether two values are equal", {
-          Assertion a;
-          a.value = 10;
+          auto a = new Assertion(10);
           a.equal(10);
           a.not.equal(5);
+          a.not;
           assertThrown!Exception(a.equal(2));
+        });
+      });
+
+      describe(".Throw", {
+        it("asserts whether an expressions throws", {
+          void throwing()
+          {
+            throw new Exception("I throw with 0!");
+          }
+
+          should(&throwing).Throw!Exception;
+        });
+
+        it("throws for non-callable expressions", {
+          assertThrown!Exception(should(10).Throw);
         });
       });
     });

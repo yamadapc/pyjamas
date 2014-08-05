@@ -1,109 +1,118 @@
 import std.conv;
+import std.exception;
 import std.range;
 import std.string;
-import std.stdio;
+import std.traits;
 import std.variant;
 
-Assertion should(T)(const T value)
+Assertion should(T)(const lazy T value)
 {
-  Assertion a;
-  a.value = value;
-  return a;
+  return new Assertion(value);
 }
 
-struct Assertion
+class Assertion
 {
   Variant value;
   Variant other;
   string operator = "be";
   bool negated = false;
-}
+  bool callable = false;
 
-Assertion not(Assertion a)
-{
-  return Assertion(a.value, a.other, a.operator, true);
-}
-
-alias id be;
-alias id as;
-alias id of;
-alias id a;
-alias id and;
-alias id have;
-alias id which;
-
-bool True(Assertion a)
-{
-  a.other = true;
-  return a.ok(a.value == true);
-}
-
-bool False(Assertion a)
-{
-  a.other = false;
-  return !a.ok(a.value == false);
-}
-
-T id(T)(T a)
-{
-  return a;
-}
-
-void Throw(T : Throwable = Exception, E)(Assertion a,
-                                         lazy E expr,
-                                         string file = __FILE__,
-                                         size_t line = __LINE__)
-{
-  a.value = "function";
-  a.operator = "throw";
-  assertThrown(expr, a.message, file, line);
-}
-
-T ok(T)(Assertion a,
-        const T expr,
-        string file = __FILE__,
-        size_t line = __LINE__)
-{
-  if(a.negated ? !expr : expr) return expr;
-  throw new Exception(a.message, file, line);
-}
-
-Variant equal(T)(Assertion a,
-                 const T other,
-                 string file = __FILE__,
-                 size_t line = __LINE__)
-{
-  a.operator = "equal";
-  a.other = other;
-  auto expr = a.value == other;
-  a.ok(a.value == other, file, line);
-  return a.value;
-}
-
-Variant exist(Assertion a, string file = __FILE__, size_t line = __LINE__)
-{
-  a.operator = "exist";
-
-  if(!a.value.hasValue)
+  this() {};
+  this(E)(const E _value)
   {
-    a.ok(false, file, line);
-  }
-  else if(a.value.convertsTo!(typeof(null)) &&
-          a.value.get!(typeof(null)) is null)
-  {
-    a.ok(false, file, line);
+    static if(isCallable!E) callable = true;
+    value = _value;
   }
 
-  return a.value;
-}
+  Assertion not()
+  {
+    negated = !negated;
+    return this;
+  }
 
-string message(Assertion a)
-{
-  return format(
-    "expected %s to %s%s%s",
-    a.value.to!string,
-    (a.negated ? "not " : ""),
-    a.operator,
-    (a.other.hasValue ? " " ~ a.other.to!string : "")
-  );
+  bool True(string file = __FILE__, size_t line = __LINE__)
+  {
+    other = true;
+    return ok(value == true, file, line);
+  }
+
+  bool False(string file = __FILE__, size_t line = __LINE__)
+  {
+    other = false;
+    return !ok(value == false, file, line);
+  }
+
+  void Throw(T : Throwable = Exception)(string file = __FILE__,
+                                        size_t line = __LINE__)
+  {
+    if(!callable)
+    {
+      operator = "be callable and throw";
+      ok(false, file, line);
+    }
+
+    operator = "throw";
+    assertThrown!T(value(), message, file, line);
+  }
+
+  T ok(T)(const T expr,
+          string file = __FILE__,
+          size_t line = __LINE__)
+  {
+    if(negated ? !expr : expr) return expr;
+    throw new Exception(message, file, line);
+  }
+
+  Variant equal(T)(const T _other,
+                   string file = __FILE__,
+                   size_t line = __LINE__)
+  {
+    operator = "equal";
+    other = _other;
+    auto expr = value == other;
+    ok(value == _other, file, line);
+    return value;
+  }
+
+  Variant exist(string file = __FILE__, size_t line = __LINE__)
+  {
+    operator = "exist";
+
+    if(!value.hasValue)
+    {
+      ok(false, file, line);
+    }
+    else if(value.convertsTo!(typeof(null)) &&
+            value.get!(typeof(null)) is null)
+    {
+      ok(false, file, line);
+    }
+
+    return value;
+  }
+
+  string message()
+  {
+    return format(
+      "expected %s to %s%s%s",
+      value.to!string,
+      (negated ? "not " : ""),
+      operator,
+      (other.hasValue ? " " ~ other.to!string : "")
+    );
+  }
+
+  alias id be;
+  alias id as;
+  alias id of;
+  alias id a;
+  alias id and;
+  alias id have;
+  alias id which;
+
+  Assertion id()
+  {
+    return this;
+  }
 }
