@@ -5,102 +5,22 @@ import std.string;
 import std.traits;
 import std.variant;
 
-Assertion should(T)(const lazy T value)
+Assertion!T should(T)(T value)
 {
-  return new Assertion(value);
+  return new Assertion!T(value);
 }
 
-class Assertion
+class Assertion(T)
 {
-  Variant value;
-  Variant other;
-  string operator = "be";
+  static bool callable = isCallable!T;
   bool negated = false;
-  bool callable = false;
+  string operator = "be";
+  T value;
 
   this() {};
-  this(E)(const E _value)
+  this(T _value)
   {
-    static if(isCallable!E) callable = true;
     value = _value;
-  }
-
-  Assertion not()
-  {
-    negated = !negated;
-    return this;
-  }
-
-  bool True(string file = __FILE__, size_t line = __LINE__)
-  {
-    other = true;
-    return ok(value == true, file, line);
-  }
-
-  bool False(string file = __FILE__, size_t line = __LINE__)
-  {
-    other = false;
-    return !ok(value == false, file, line);
-  }
-
-  void Throw(T : Throwable = Exception)(string file = __FILE__,
-                                        size_t line = __LINE__)
-  {
-    if(!callable)
-    {
-      operator = "be callable and throw";
-      ok(false, file, line);
-    }
-
-    operator = "throw";
-    assertThrown!T(value(), message, file, line);
-  }
-
-  T ok(T)(const T expr,
-          string file = __FILE__,
-          size_t line = __LINE__)
-  {
-    if(negated ? !expr : expr) return expr;
-    throw new Exception(message, file, line);
-  }
-
-  Variant equal(T)(const T _other,
-                   string file = __FILE__,
-                   size_t line = __LINE__)
-  {
-    operator = "equal";
-    other = _other;
-    auto expr = value == other;
-    ok(value == _other, file, line);
-    return value;
-  }
-
-  Variant exist(string file = __FILE__, size_t line = __LINE__)
-  {
-    operator = "exist";
-
-    if(!value.hasValue)
-    {
-      ok(false, file, line);
-    }
-    else if(value.convertsTo!(typeof(null)) &&
-            value.get!(typeof(null)) is null)
-    {
-      ok(false, file, line);
-    }
-
-    return value;
-  }
-
-  string message()
-  {
-    return format(
-      "expected %s to %s%s%s",
-      value.to!string,
-      (negated ? "not " : ""),
-      operator,
-      (other.hasValue ? " " ~ other.to!string : "")
-    );
   }
 
   alias id be;
@@ -115,4 +35,85 @@ class Assertion
   {
     return this;
   }
+
+  Assertion not()
+  {
+    negated = !negated;
+    return this;
+  }
+
+  U ok(U)(U expr,
+          lazy string message,
+          string file = __FILE__,
+          size_t line = __LINE__)
+  {
+    if(negated ? !expr : expr) return expr;
+    throw new Exception(message, file, line);
+  }
+
+  T equal(U)(U other,
+             string file = __FILE__,
+             size_t line = __LINE__)
+  {
+    auto t_other = other.to!T;
+    ok(value == other, message(other), file, line);
+    return value;
+  }
+
+  T exist(string file = __FILE__, size_t line = __LINE__)
+  {
+    static if(is(T == bool))
+    {
+      return value;
+    }
+    else
+    {
+      operator = "exist";
+      if(!value)
+      {
+        ok(false, message, file, line);
+      }
+      return value;
+    }
+  }
+
+  string message(U)(U other)
+  {
+    return format("expected %s to %s%s%s", value.to!string,
+                                           (negated ? "not " : ""),
+                                           operator,
+                                           (" " ~ other.to!string));
+  }
+
+  string message()
+  {
+    return format("expected %s to %s%s", value.to!string,
+                                           (negated ? "not " : ""),
+                                           operator
+                                           );
+  }
+
+  static if(is(T == bool))
+  {
+    bool True(string file = __FILE__, size_t line = __LINE__)
+    {
+      return ok(value == true, message(true), file, line);
+    }
+
+    bool False(string file = __FILE__, size_t line = __LINE__)
+    {
+      return !ok(value == false, message(false), file, line);
+    }
+  }
+
+  static if(isCallable!T)
+  {
+    void Throw(T : Throwable = Exception)(string file = __FILE__,
+                                          size_t line = __LINE__)
+    {
+      operator = "throw";
+      assertThrown!T(value(), message, file, line);
+    }
+  }
+
 }
