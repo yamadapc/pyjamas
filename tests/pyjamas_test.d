@@ -83,6 +83,21 @@ void main()
           auto a2 = new Assertion!(char[])([0, 2, 1]);
           a2.not.equal([1, 2, 3, 5]);
         });
+
+        it("works for structs", {
+          struct Example
+          {
+            bool a = false;
+            string f = "something";
+          }
+
+          auto e = Example(true, "here");
+          auto a1 = new Assertion!(Example)(e);
+          a1.equal(Example(true, "here"));
+
+          auto a2 = new Assertion!(Example)(e);
+          a1.not.equal(Example(true, "asdf"));
+        });
       });
 
       describe(".Throw", {

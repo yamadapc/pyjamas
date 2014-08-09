@@ -62,19 +62,15 @@ class Assertion(T)
 
   T exist(string file = __FILE__, size_t line = __LINE__)
   {
-    static if(is(T == bool))
-    {
-      return value;
-    }
-    else
+    static if(isImplicitlyConvertible!(T, typeof(null)))
     {
       operator = "exist";
-      if(!value)
+      if(value == null)
       {
         ok(false, message, file, line);
       }
-      return value;
     }
+    return value;
   }
 
   string message(U)(U other)
