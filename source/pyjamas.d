@@ -1,6 +1,7 @@
 import std.conv;
 import std.exception;
 import std.range;
+import std.regex;
 import std.string;
 import std.traits;
 import std.variant;
@@ -89,6 +90,24 @@ class Assertion(T)
                                            );
   }
 
+  static if(isSomeString!T)
+  {
+    private alias BasicElementOfT = Unqual!(ElementEncodingType!T);
+    private alias RegexOfT = Regex!(BasicElementOfT);
+    private alias StaticRegexOfT = StaticRegex!(BasicElementOfT);
+
+    auto match(RegEx)(RegEx re, string file = __FILE__, size_t line = __LINE__)
+      if(is(RegEx == RegexOfT) ||
+         is(RegEx == StaticRegexOfT) ||
+         isSomeString!RegEx)
+    {
+      auto m = std.regex.match(value, re);
+      operator = "match";
+      ok(!m.empty, message(re), file, line);
+      return m;
+    }
+  }
+
   static if(is(T == bool))
   {
     bool True(string file = __FILE__, size_t line = __LINE__)
@@ -103,7 +122,7 @@ class Assertion(T)
   }
 
   static if(isCallable!T)
-  {
+ {
     void Throw(T : Throwable = Exception)(string file = __FILE__,
                                           size_t line = __LINE__)
     {
