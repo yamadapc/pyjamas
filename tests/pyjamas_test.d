@@ -100,6 +100,27 @@ void main()
         });
       });
 
+      describe(".match", {
+        import std.regex;
+
+        it("returns whether a string type matches a Regex", {
+          auto a = new Assertion!string("something weird");
+          //assert(a.match(`[a-z]+`));
+          assert(a.match(regex(`[a-z]+`)));
+        });
+
+        it("returns whether a string type matches a StaticRegex", {
+          auto a = new Assertion!string("something 2 weird");
+          assert(!a.not.match(ctRegex!`^[a-z]+$`));
+        });
+
+        it("returns whether a string type matches a string regex", {
+          auto a = new Assertion!string("1234numbers");
+          assert(a.match(`[0-9]+[a-z]+`));
+          assert(!a.not.match(`^[a-z]+`));
+        });
+      });
+
       describe(".Throw", {
         it("asserts whether an expressions throws", {
           void throwing()
