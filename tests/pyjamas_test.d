@@ -121,6 +121,28 @@ void main()
         });
       });
 
+      describe(".length", {
+        it("asserts for length equality for strings", {
+          auto a = new Assertion!string("1234567");
+          a.have.length(7);
+        });
+
+        it("asserts for length equality for arrays", {
+          auto a = new Assertion!(int[])([1, 2, 3, 4, 5, 6]);
+          a.have.length(6);
+        });
+
+        it("asserts for length equality for associative arrays", {
+          auto a = new Assertion!(string[string])([
+            "something": "here",
+            "what": "is",
+            "this": "stuff",
+            "we're": "doing"
+          ]);
+          a.have.length(4);
+        });
+      });
+
       describe(".Throw", {
         it("asserts whether an expressions throws", {
           void throwing()
