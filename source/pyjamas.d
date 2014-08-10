@@ -90,6 +90,16 @@ class Assertion(T)
                                            );
   }
 
+  static if(hasLength!T || hasMember!(T, "string") || isSomeString!T)
+  {
+    U length(U)(U len, string file = __FILE__, size_t line = __LINE__)
+    {
+      operator = "have length of";
+      ok(value.length == len, message(len), file, line);
+      return len;
+    }
+  }
+
   static if(isSomeString!T)
   {
     private alias BasicElementOfT = Unqual!(ElementEncodingType!T);
