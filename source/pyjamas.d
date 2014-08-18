@@ -85,9 +85,8 @@ class Assertion(T)
   string message()
   {
     return format("expected %s to %s%s", value.to!string,
-                                           (negated ? "not " : ""),
-                                           operator
-                                           );
+                                         (negated ? "not " : ""),
+                                         operator);
   }
 
   static if(hasLength!T || hasMember!(T, "string") || isSomeString!T)
