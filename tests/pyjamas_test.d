@@ -121,6 +121,21 @@ void main()
         });
       });
 
+      describe(".include", {
+        it("asserts for arrays containing elements", {
+          auto a = new Assertion!(int[])([1, 2, 3, 4, 5, 6]);
+          a.include(4);
+          a.not.include(7);
+        });
+
+        it("asserts for stirngs containing characters", {
+          auto a = new Assertion!string("asdf1");
+          a.include('a');
+          a.include("sd");
+          a.not.include(2);
+        });
+      });
+
       describe(".length", {
         it("asserts for length equality for strings", {
           auto a = new Assertion!string("1234567");
