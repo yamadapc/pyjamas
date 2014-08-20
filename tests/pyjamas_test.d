@@ -175,6 +175,30 @@ void main()
           should(&notThrowing).not.Throw;
         });
       });
+
+      describe(".biggerThan", {
+        it("asserts whether a value is bigger than other", {
+          auto a1 = new Assertion!bool(true);
+          a1.biggerThan(0);
+          a1.biggerThan(false);
+
+          auto a2 = new Assertion!string("aab");
+          a2.biggerThan("aaa");
+          a2.not.biggerThan("zz");
+        });
+      });
+
+      describe(".smallerThan", {
+        it("asserts whether a value is smaller than other", {
+          auto a1 = new Assertion!bool(false);
+          a1.smallerThan(1);
+          a1.smallerThan(true);
+
+          auto a2 = new Assertion!int(1000);
+          a2.smallerThan(2000);
+          a2.not.smallerThan(99);
+        });
+      });
     });
   });
 }
