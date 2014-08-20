@@ -1,11 +1,11 @@
-import std.algorithm;
-import std.conv;
-import std.exception;
-import std.range;
-import std.regex;
-import std.string;
-import std.traits;
-import std.variant;
+import std.algorithm : find;
+import std.conv : to;
+import std.exception : assertThrown;
+import std.range : isInputRange, hasLength, ElementEncodingType, empty;
+import std.regex : Regex, StaticRegex;// & std.regex.match
+import std.string : format;
+import std.traits : hasMember, isSomeString, isCallable,
+                    isImplicitlyConvertible, Unqual, std;
 
 Assertion!T should(T)(T value)
 {
