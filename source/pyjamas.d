@@ -89,6 +89,18 @@ class Assertion(T)
                                          operator);
   }
 
+  bool biggerThan(U)(U other, string file = __FILE__, size_t line = __LINE__)
+  {
+    operator = "be bigger than";
+    return ok(value > other, message(other), file, line);
+  }
+
+  bool smallerThan(U)(U other, string file = __FILE__, size_t line = __LINE__)
+  {
+    operator = "be smaller than";
+    return ok(value < other, message(other), file, line);
+  }
+
   static if(isInputRange!T)
   {
     U include(U)(U other, string file = __FILE__, size_t line = __LINE__)
