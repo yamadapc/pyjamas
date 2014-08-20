@@ -13,3 +13,15 @@ import pyjamas;
 10.should.equal(10);
 5.should.not.equal(10);
 ```
+
+## Tests
+
+Run tests with:
+```
+dub --config=test
+```
+
+## License
+
+This code is licensed under the GPLv3 license. See the [LICENSE](LICENSE) file
+for more information.
