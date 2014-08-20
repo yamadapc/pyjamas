@@ -166,6 +166,13 @@ void main()
           }
 
           should(&throwing).Throw!Exception;
+
+          void notThrowing()
+          {
+            return;
+          }
+
+          should(&notThrowing).not.Throw;
         });
       });
     });
