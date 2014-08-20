@@ -1,6 +1,5 @@
 import std.algorithm : find;
 import std.conv : to;
-import std.exception : assertThrown, assertNotThrown;
 import std.range : isInputRange, hasLength, ElementEncodingType, empty;
 import std.regex : Regex, StaticRegex;// & std.regex.match
 import std.string : format;
@@ -147,8 +146,10 @@ class Assertion(T)
                                           size_t line = __LINE__)
     {
       operator = "throw";
-      if(negated) assertNotThrown(value(), message, file, line);
-      else assertThrown!T(value(), message, file, line);
+      bool thrown = false;
+      try value();
+      catch(T) thrown = true;
+      ok(thrown, message(), file, line);
     }
   }
 
