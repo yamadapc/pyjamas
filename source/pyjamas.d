@@ -1,3 +1,10 @@
+/**
+ * Authors: Pedro Tacla Yamada
+ * Date: August 21, 2014
+ * License: Licensed under the GPLv3 license. See LICENSE for more information.
+ */
+module pyjamas;
+
 import std.algorithm : find;
 import std.conv : to;
 import std.range : isInputRange, hasLength, ElementEncodingType, empty;
