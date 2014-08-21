@@ -34,7 +34,7 @@
 <p><a href="https://travis-ci.org/yamadapc/pyjamas"><img src="https://travis-ci.org/yamadapc/pyjamas.svg" alt="Build Status"></a>
 <a href="https://gitter.im/yamadapc/pyjamas"><img src="https://badges.gitter.im/yamadapc/pyjamas.png" alt="Gitter chat"></a></p>
 
-<hr><p><img src="https://raw.githubusercontent.com/yamadapc/pyjamas/master/logo-big.png" align="left">
+<hr><p><img src="https://raw.githubusercontent.com/yamadapc/pyjamas/master/logo-big.png"><br>
 A BDD assertion library for D.</p>
 
 <h2>
@@ -60,7 +60,7 @@ should.js</a> module for Node.JS.</p>
 lookup shortcut syntax, one is able to use both <code>should(obj)</code> and <code>obj.should</code>
 to get an object wrapped around an <code>Assertion</code> instance.</p>
 
-<hr><h3>
+<h3>
 <a name="assertion-not" class="anchor" href="#assertion-not"><span class="octicon octicon-link"></span></a><code>Assertion not()</code>
 </h3>
 
@@ -160,6 +160,16 @@ Asserts for a boolean value to be equal to <code>true</code> or to `<code>false<
 
 <div class="highlight highlight-d"><pre><span class="kc">true</span><span class="p">.</span><span class="n">should</span><span class="p">.</span><span class="n">be</span><span class="p">.</span><span class="n">True</span><span class="p">;</span>
 <span class="kc">false</span><span class="p">.</span><span class="n">should</span><span class="p">.</span><span class="n">be</span><span class="p">.</span><span class="n">False</span><span class="p">;</span>
+</pre></div>
+
+<h3>
+<a name="bool-sortedstrinf-file--__file__-size_t-line--__line__" class="anchor" href="#bool-sortedstrinf-file--__file__-size_t-line--__line__"><span class="octicon octicon-link"></span></a><code>bool sorted(strinf file = __FILE__, size_t line = __LINE__);</code>
+</h3>
+
+<p>Asserts whether a forward range is sorted.</p>
+
+<div class="highlight highlight-d"><pre><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">].</span><span class="n">should</span><span class="p">.</span><span class="n">be</span><span class="p">.</span><span class="n">sorted</span><span class="p">;</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">].</span><span class="n">should</span><span class="p">.</span><span class="n">not</span><span class="p">.</span><span class="n">be</span><span class="p">.</span><span class="n">sorted</span><span class="p">;</span>
 </pre></div>
 
 <h3>
