@@ -5,9 +5,10 @@
  */
 module pyjamas;
 
-import std.algorithm : find;
+import std.algorithm : find, isSorted;
 import std.conv : to;
-import std.range : isInputRange, hasLength, ElementEncodingType, empty;
+import std.range : isInputRange, isForwardRange, hasLength, ElementEncodingType,
+                   empty;
 import std.regex : Regex, StaticRegex;// & std.regex.match
 import std.string : format;
 import std.traits : hasMember, isSomeString, isCallable,
@@ -106,6 +107,15 @@ class Assertion(T)
   {
     operator = "be smaller than";
     return ok(value < other, message(other), file, line);
+  }
+
+  static if(isForwardRange!T)
+  {
+    bool sorted(string file = __FILE__, size_t line = __LINE__)
+    {
+      operator = "be sorted";
+      return ok(value.isSorted, message, file, line);
+    }
   }
 
   static if(isInputRange!T)

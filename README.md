@@ -110,6 +110,14 @@ true.should.be.True;
 false.should.be.False;
 ```
 
+### `bool sorted(strinf file = __FILE__, size_t line = __LINE__);`
+
+Asserts whether a forward range is sorted.
+```d
+[1, 2, 3, 4].should.be.sorted;
+[1, 2, 0, 4].should.not.be.sorted;
+```
+
 ### `void Throw(T : Throwable)(string file = __FILE__, size_t line = __LINE__);`
 
 Asserts whether a callable object wrapped around the assertion throws an

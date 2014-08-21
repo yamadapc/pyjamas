@@ -176,6 +176,15 @@ void main()
         });
       });
 
+      describe(".sorted", {
+        it("asserts whether a range is sorted", {
+          auto unsorted = [4, 3, 2, 1];
+          assert(!new Assertion!(int[])(unsorted).not.sorted);
+          auto sorted = [1, 2, 3, 4, 8];
+          assert(new Assertion!(int[])(sorted).sorted);
+        });
+      });
+
       describe(".biggerThan", {
         it("asserts whether a value is bigger than other", {
           auto a1 = new Assertion!bool(true);
