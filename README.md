@@ -27,7 +27,7 @@ Pyjamas exports a single function `should` meant for public use. Because of D's
 lookup shortcut syntax, one is able to use both `should(obj)` and `obj.should`
 to get an object wrapped around an `Assertion` instance.
 
-### `Assertion not()`
+#### `Assertion not()`
 
 This function negates the wrapper assertion. With it, one can express fluent
 assertions without much effort:
@@ -35,7 +35,7 @@ assertions without much effort:
 10.should.not.equal(2);
 ```
 
-### `T equal(U)(U other, string file = __FILE__, size_t line = __LINE__);`
+#### `T equal(U)(U other, string file = __FILE__, size_t line = __LINE__);`
 
 Asserts for equality between two objects. Returns the value wrapped around the
 assertion.
@@ -44,7 +44,7 @@ assertion.
 255.should.equal(10); // Throws an Exception "expected 255 to equal 10"
 ```
 
-### `T exist(string file = __FILE__, size_t line = __LINE__);`
+#### `T exist(string file = __FILE__, size_t line = __LINE__);`
 
 Asserts whether a value exists - currently simply compares it with `null`, if it
 is convertible to `null`. Returns the value wrapped around the assertion.
@@ -55,7 +55,7 @@ string doesntexist;
 str.should.exist; // Throws an Exception "expected null to exist"
 ```
 
-### `bool biggerThan(U)(U other, string file = __FILE__, size_t line = __LINE__);`
+#### `bool biggerThan(U)(U other, string file = __FILE__, size_t line = __LINE__);`
 
 Asserts if a value is bigger than another value. Returns the result.
 ```d
@@ -63,7 +63,7 @@ Asserts if a value is bigger than another value. Returns the result.
 10.should.be.biggerThan(1);
 ```
 
-### `bool smallerThan(U)(U other, string file = __FILE__, size_t line = __LINE__)`
+#### `bool smallerThan(U)(U other, string file = __FILE__, size_t line = __LINE__)`
 
 Asserts if a value is smaller than another value. Returns the result.
 ```d
@@ -71,7 +71,7 @@ Asserts if a value is smaller than another value. Returns the result.
 false.should.be.smallerThan(true);
 ```
 
-### `U include(U)(U other, string file = __FILE__, size_t line = __LINE__);`
+#### `U include(U)(U other, string file = __FILE__, size_t line = __LINE__);`
 
 Asserts for an input range wrapped around an `Assertion` to contain/include a
 value.
@@ -81,7 +81,7 @@ value.
 "something".should.include("th");
 ```
 
-### `U length(U)(U length, string file = __FILE__, size_t line = __LINE__);`
+#### `U length(U)(U length, string file = __FILE__, size_t line = __LINE__);`
 
 Asserts for the `.length` property or function value to equal some value.
 ```d
@@ -90,7 +90,7 @@ Asserts for the `.length` property or function value to equal some value.
 // ^^ - Throws an Exception "expected 'abcdefg' to have length of 0"
 ```
 
-### `auto match(RegEx)(RegEx re, string file = __FILE__, size_t line = __LINE__);`
+#### `auto match(RegEx)(RegEx re, string file = __FILE__, size_t line = __LINE__);`
 
 Asserts for a string wrapped around the Assertion to match a regular expression.
 ```d
@@ -101,7 +101,7 @@ Asserts for a string wrapped around the Assertion to match a regular expression.
 "1234numbers".not.match(`^[a-z]+`);
 ```
 
-### `bool True(string file = __FILE__, size_t = line = __LINE__);` and `.False`
+#### `bool True(string file = __FILE__, size_t = line = __LINE__);` and `.False`
 
 Both functions have the same signature.
 Asserts for a boolean value to be equal to `true` or to ``false`.`
@@ -110,7 +110,7 @@ true.should.be.True;
 false.should.be.False;
 ```
 
-### `bool sorted(strinf file = __FILE__, size_t line = __LINE__);`
+#### `bool sorted(strinf file = __FILE__, size_t line = __LINE__);`
 
 Asserts whether a forward range is sorted.
 ```d
@@ -118,7 +118,7 @@ Asserts whether a forward range is sorted.
 [1, 2, 0, 4].should.not.be.sorted;
 ```
 
-### `void Throw(T : Throwable)(string file = __FILE__, size_t line = __LINE__);`
+#### `void Throw(T : Throwable)(string file = __FILE__, size_t line = __LINE__);`
 
 Asserts whether a callable object wrapped around the assertion throws an
 exception of type T.
@@ -138,7 +138,7 @@ void notThrowing()
 should(&notThrowing).not.Throw;
 ```
 
-### `.be` `.as` `.of` `.a` `.and` `.have` `.which`
+#### `.be` `.as` `.of` `.a` `.and` `.have` `.which`
 
 These methods all are aliases for an identity function, returning the assertion
 instance without modification. This allows one to have a more fluent API, by
