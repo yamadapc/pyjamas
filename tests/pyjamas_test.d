@@ -105,7 +105,7 @@ void main()
 
         it("returns whether a string type matches a Regex", {
           auto a = new Assertion!string("something weird");
-          //assert(a.match(`[a-z]+`));
+          assert(a.match(`[a-z]+`));
           assert(a.match(regex(`[a-z]+`)));
         });
 
