@@ -94,11 +94,11 @@ Asserts for the `.length` property or function value to equal some value.
 
 Asserts for a string wrapped around the Assertion to match a regular expression.
 ```d
-"something weird".match(`[a-z]+`);
-"something weird".match(regex(`[a-z]+`));
+"something weird".should.match(`[a-z]+`);
+"something weird".should.match(regex(`[a-z]+`));
 "something 2 weird".should.not.match(ctRegex!`^[a-z]+$`));
-"1234numbers".match(`[0-9]+[a-z]+`);
-"1234numbers".not.match(`^[a-z]+`);
+"1234numbers".should.match(`[0-9]+[a-z]+`);
+"1234numbers".should.not.match(`^[a-z]+`);
 ```
 
 #### `bool True(string file = __FILE__, size_t = line = __LINE__);` and `.False`
