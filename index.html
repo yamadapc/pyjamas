@@ -1,0 +1,235 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Pyjamas by yamadapc</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Pyjamas</h1>
+        <p>A BDD assertion library for D</p>
+
+        <p class="view"><a href="https://github.com/yamadapc/pyjamas">View the Project on GitHub <small>yamadapc/pyjamas</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/yamadapc/pyjamas/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/yamadapc/pyjamas/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/yamadapc/pyjamas">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="pyjamas" class="anchor" href="#pyjamas"><span class="octicon octicon-link"></span></a>pyjamas</h1>
+
+<p><a href="https://travis-ci.org/yamadapc/pyjamas"><img src="https://travis-ci.org/yamadapc/pyjamas.svg" alt="Build Status"></a>
+<a href="https://gitter.im/yamadapc/pyjamas"><img src="https://badges.gitter.im/yamadapc/pyjamas.png" alt="Gitter chat"></a></p>
+
+<hr><p><img src="https://raw.githubusercontent.com/yamadapc/pyjamas/master/logo-big.png" align="left">
+A BDD assertion library for D.</p>
+
+<h2>
+<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example</h2>
+
+<div class="highlight highlight-d"><pre><span class="k">import</span> <span class="n">pyjamas</span><span class="p">;</span>
+
+<span class="mf">10.</span><span class="n">should</span><span class="p">.</span><span class="n">equal</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<span class="mf">5.</span><span class="n">should</span><span class="p">.</span><span class="n">not</span><span class="p">.</span><span class="n">equal</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">].</span><span class="n">should</span><span class="p">.</span><span class="n">include</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+</pre></div>
+
+<h2>
+<a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h2>
+
+<p>Pyjamas is an assertion library heavily inspired by <a href="https://github.com/visionmedia/should.js">visionmedia'ś
+should.js</a> module for Node.JS.</p>
+
+<h2>
+<a name="general-assertions" class="anchor" href="#general-assertions"><span class="octicon octicon-link"></span></a>General Assertions</h2>
+
+<p>Pyjamas exports a single function <code>should</code> meant for public use. Because of D's
+lookup shortcut syntax, one is able to use both <code>should(obj)</code> and <code>obj.should</code>
+to get an object wrapped around an <code>Assertion</code> instance.</p>
+
+<hr><h3>
+<a name="assertion-not" class="anchor" href="#assertion-not"><span class="octicon octicon-link"></span></a><code>Assertion not()</code>
+</h3>
+
+<p>This function negates the wrapper assertion. With it, one can express fluent
+assertions without much effort:</p>
+
+<div class="highlight highlight-d"><pre><span class="mf">10.</span><span class="n">should</span><span class="p">.</span><span class="n">not</span><span class="p">.</span><span class="n">equal</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+</pre></div>
+
+<h3>
+<a name="t-equaluu-other-string-file--__file__-size_t-line--__line__" class="anchor" href="#t-equaluu-other-string-file--__file__-size_t-line--__line__"><span class="octicon octicon-link"></span></a><code>T equal(U)(U other, string file = __FILE__, size_t line = __LINE__);</code>
+</h3>
+
+<p>Asserts for equality between two objects. Returns the value wrapped around the
+assertion.</p>
+
+<div class="highlight highlight-d"><pre><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">].</span><span class="n">should</span><span class="p">.</span><span class="n">equal</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]);</span>
+<span class="mf">255.</span><span class="n">should</span><span class="p">.</span><span class="n">equal</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span> <span class="c1">// Throws an Exception "expected 255 to equal 10"</span>
+</pre></div>
+
+<h3>
+<a name="t-existstring-file--__file__-size_t-line--__line__" class="anchor" href="#t-existstring-file--__file__-size_t-line--__line__"><span class="octicon octicon-link"></span></a><code>T exist(string file = __FILE__, size_t line = __LINE__);</code>
+</h3>
+
+<p>Asserts whether a value exists - currently simply compares it with <code>null</code>, if it
+is convertible to <code>null</code>. Returns the value wrapped around the assertion.</p>
+
+<div class="highlight highlight-d"><pre><span class="k">auto</span> <span class="n">exists</span> <span class="p">=</span> <span class="s">"I exist!"</span><span class="p">;</span>
+<span class="n">should</span><span class="p">(</span><span class="n">exists</span><span class="p">).</span><span class="n">exist</span><span class="p">;</span>
+<span class="nb">string</span> <span class="n">doesntexist</span><span class="p">;</span>
+<span class="n">str</span><span class="p">.</span><span class="n">should</span><span class="p">.</span><span class="n">exist</span><span class="p">;</span> <span class="c1">// Throws an Exception "expected null to exist"</span>
+</pre></div>
+
+<h3>
+<a name="bool-biggerthanuu-other-string-file--__file__-size_t-line--__line__" class="anchor" href="#bool-biggerthanuu-other-string-file--__file__-size_t-line--__line__"><span class="octicon octicon-link"></span></a><code>bool biggerThan(U)(U other, string file = __FILE__, size_t line = __LINE__);</code>
+</h3>
+
+<p>Asserts if a value is bigger than another value. Returns the result.</p>
+
+<div class="highlight highlight-d"><pre><span class="s">"z"</span><span class="p">.</span><span class="n">should</span><span class="p">.</span><span class="n">be</span><span class="p">.</span><span class="n">biggerThan</span><span class="p">(</span><span class="s">"a"</span><span class="p">);</span>
+<span class="mf">10.</span><span class="n">should</span><span class="p">.</span><span class="n">be</span><span class="p">.</span><span class="n">biggerThan</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</pre></div>
+
+<h3>
+<a name="bool-smallerthanuu-other-string-file--__file__-size_t-line--__line__" class="anchor" href="#bool-smallerthanuu-other-string-file--__file__-size_t-line--__line__"><span class="octicon octicon-link"></span></a><code>bool smallerThan(U)(U other, string file = __FILE__, size_t line = __LINE__)</code>
+</h3>
+
+<p>Asserts if a value is smaller than another value. Returns the result.</p>
+
+<div class="highlight highlight-d"><pre><span class="mf">10.</span><span class="n">should</span><span class="p">.</span><span class="n">be</span><span class="p">.</span><span class="n">smallerThan</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+<span class="kc">false</span><span class="p">.</span><span class="n">should</span><span class="p">.</span><span class="n">be</span><span class="p">.</span><span class="n">smallerThan</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+</pre></div>
+
+<h3>
+<a name="u-includeuu-other-string-file--__file__-size_t-line--__line__" class="anchor" href="#u-includeuu-other-string-file--__file__-size_t-line--__line__"><span class="octicon octicon-link"></span></a><code>U include(U)(U other, string file = __FILE__, size_t line = __LINE__);</code>
+</h3>
+
+<p>Asserts for an input range wrapped around an <code>Assertion</code> to contain/include a
+value.</p>
+
+<div class="highlight highlight-d"><pre><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">].</span><span class="n">should</span><span class="p">.</span><span class="n">include</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="s">"something"</span><span class="p">.</span><span class="n">should</span><span class="p">.</span><span class="n">not</span><span class="p">.</span><span class="n">include</span><span class="p">(</span><span class="sc">'o'</span><span class="p">);</span>
+<span class="s">"something"</span><span class="p">.</span><span class="n">should</span><span class="p">.</span><span class="n">include</span><span class="p">(</span><span class="s">"th"</span><span class="p">);</span>
+</pre></div>
+
+<h3>
+<a name="u-lengthuu-length-string-file--__file__-size_t-line--__line__" class="anchor" href="#u-lengthuu-length-string-file--__file__-size_t-line--__line__"><span class="octicon octicon-link"></span></a><code>U length(U)(U length, string file = __FILE__, size_t line = __LINE__);</code>
+</h3>
+
+<p>Asserts for the <code>.length</code> property or function value to equal some value.</p>
+
+<div class="highlight highlight-d"><pre><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">].</span><span class="n">should</span><span class="p">.</span><span class="n">have</span><span class="p">.</span><span class="n">length</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+<span class="s">"abcdefg"</span><span class="p">.</span><span class="n">should</span><span class="p">.</span><span class="n">have</span><span class="p">.</span><span class="n">length</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="c1">// ^^ - Throws an Exception "expected 'abcdefg' to have length of 0"</span>
+</pre></div>
+
+<h3>
+<a name="auto-matchregexregex-re-string-file--__file__-size_t-line--__line__" class="anchor" href="#auto-matchregexregex-re-string-file--__file__-size_t-line--__line__"><span class="octicon octicon-link"></span></a><code>auto match(RegEx)(RegEx re, string file = __FILE__, size_t line = __LINE__);</code>
+</h3>
+
+<p>Asserts for a string wrapped around the Assertion to match a regular expression.</p>
+
+<div class="highlight highlight-d"><pre><span class="s">"something weird"</span><span class="p">.</span><span class="n">match</span><span class="p">(</span><span class="s">`[a-z]+`</span><span class="p">);</span>
+<span class="s">"something weird"</span><span class="p">.</span><span class="n">match</span><span class="p">(</span><span class="n">regex</span><span class="p">(</span><span class="s">`[a-z]+`</span><span class="p">));</span>
+<span class="s">"something 2 weird"</span><span class="p">.</span><span class="n">should</span><span class="p">.</span><span class="n">not</span><span class="p">.</span><span class="n">match</span><span class="p">(</span><span class="n">ctRegex</span><span class="p">!</span><span class="s">`^[a-z]+$`</span><span class="p">));</span>
+<span class="s">"1234numbers"</span><span class="p">.</span><span class="n">match</span><span class="p">(</span><span class="s">`[0-9]+[a-z]+`</span><span class="p">);</span>
+<span class="s">"1234numbers"</span><span class="p">.</span><span class="n">not</span><span class="p">.</span><span class="n">match</span><span class="p">(</span><span class="s">`^[a-z]+`</span><span class="p">);</span>
+</pre></div>
+
+<h3>
+<a name="bool-truestring-file--__file__-size_t--line--__line__-and-false" class="anchor" href="#bool-truestring-file--__file__-size_t--line--__line__-and-false"><span class="octicon octicon-link"></span></a>
+<code>bool True(string file = __FILE__, size_t = line = __LINE__);</code> and <code>.False</code>
+</h3>
+
+<p>Both functions have the same signature.
+Asserts for a boolean value to be equal to <code>true</code> or to `<code>false</code>.`</p>
+
+<div class="highlight highlight-d"><pre><span class="kc">true</span><span class="p">.</span><span class="n">should</span><span class="p">.</span><span class="n">be</span><span class="p">.</span><span class="n">True</span><span class="p">;</span>
+<span class="kc">false</span><span class="p">.</span><span class="n">should</span><span class="p">.</span><span class="n">be</span><span class="p">.</span><span class="n">False</span><span class="p">;</span>
+</pre></div>
+
+<h3>
+<a name="void-throwt--throwablestring-file--__file__-size_t-line--__line__" class="anchor" href="#void-throwt--throwablestring-file--__file__-size_t-line--__line__"><span class="octicon octicon-link"></span></a><code>void Throw(T : Throwable)(string file = __FILE__, size_t line = __LINE__);</code>
+</h3>
+
+<p>Asserts whether a callable object wrapped around the assertion throws an
+exception of type T.</p>
+
+<div class="highlight highlight-d"><pre><span class="kt">void</span> <span class="n">throwing</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="k">throw</span> <span class="k">new</span> <span class="n">Exception</span><span class="p">(</span><span class="s">"I throw with 0!"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">should</span><span class="p">(&amp;</span><span class="n">throwing</span><span class="p">).</span><span class="n">Throw</span><span class="p">!</span><span class="n">Exception</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="n">notThrowing</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">should</span><span class="p">(&amp;</span><span class="n">notThrowing</span><span class="p">).</span><span class="n">not</span><span class="p">.</span><span class="n">Throw</span><span class="p">;</span>
+</pre></div>
+
+<h3>
+<a name="be-as-of-a-and-have-which" class="anchor" href="#be-as-of-a-and-have-which"><span class="octicon octicon-link"></span></a>
+<code>.be</code> <code>.as</code> <code>.of</code> <code>.a</code> <code>.and</code> <code>.have</code> <code>.which</code>
+</h3>
+
+<p>These methods all are aliases for an identity function, returning the assertion
+instance without modification. This allows one to have a more fluent API, by
+chaining statements together:</p>
+
+<div class="highlight highlight-d"><pre><span class="mf">10.</span><span class="n">should</span><span class="p">.</span><span class="n">be</span><span class="p">.</span><span class="n">equal</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">].</span><span class="n">should</span><span class="p">.</span><span class="n">have</span><span class="p">.</span><span class="n">length</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+</pre></div>
+
+<h2>
+<a name="need-more-documentation" class="anchor" href="#need-more-documentation"><span class="octicon octicon-link"></span></a>Need more documentation?</h2>
+
+<p>I know the documentation is still somewhat lacking, but it's better than
+nothing, I guess? :)</p>
+
+<p>Try looking at the test suite in <a href="/test/pyjamas_test.d"><code>test/pyjamas_test.d</code></a>
+to see some "real world" testing of the library. Even though I'm using my
+testing framework <a href="https://github.com/yamadapc/bed"><code>bed</code></a>, this library is
+supposed to be framework agnostic (you can use it with <code>unittest</code> if you want).</p>
+
+<p>BTW, I'll be glad to accept help in writting the documentation.</p>
+
+<h2>
+<a name="tests" class="anchor" href="#tests"><span class="octicon octicon-link"></span></a>Tests</h2>
+
+<p>Run tests with:</p>
+
+<pre><code>dub --config=test
+</code></pre>
+
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>This code is licensed under the GPLv3 license. See the <a href="LICENSE">LICENSE</a> file
+for more information.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/yamadapc">yamadapc</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
