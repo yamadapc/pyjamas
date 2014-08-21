@@ -4,6 +4,7 @@ pyjamas
 [![Gitter chat](https://badges.gitter.im/yamadapc/pyjamas.png)](https://gitter.im/yamadapc/pyjamas)
 - - -
 
+<img src="/logo-big.png" align="left"/>
 A BDD assertion library for D.
 
 ## Example
