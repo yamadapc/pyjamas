@@ -8,7 +8,7 @@ module pyjamas;
 import std.algorithm : find, isSorted;
 import std.conv : to;
 import std.range : isInputRange, isForwardRange, hasLength, ElementEncodingType,
-                   empty;
+                   isAssociativeArray, empty;
 import std.regex : Regex, StaticRegex;// & std.regex.match
 import std.string : format;
 import std.traits : hasMember, isSomeString, isCallable,
@@ -115,6 +115,14 @@ class Assertion(T)
     {
       operator = "be sorted";
       return ok(value.isSorted, message, file, line);
+    }
+  }
+
+  static if(isAssociativeArray!T) {
+    void key(U)(U other, string file = __FILE__, size_t line = __LINE__)
+    {
+      operator = "have key";
+      ok(!(other !in value), message(other), file, line);
     }
   }
 

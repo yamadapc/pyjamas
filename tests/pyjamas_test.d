@@ -176,6 +176,17 @@ void main()
         });
       });
 
+      describe(".key", {
+        it("asserts for `key` existence in types with `opIndex` defined", {
+          auto aArr = [
+            "something": "here",
+          ];
+
+          aArr.should.have.key("something");
+          aArr.should.not.have.key("else");
+        });
+      });
+
       describe(".sorted", {
         it("asserts whether a range is sorted", {
           auto unsorted = [4, 3, 2, 1];
