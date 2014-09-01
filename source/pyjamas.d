@@ -5,7 +5,7 @@
  */
 module pyjamas;
 
-import std.algorithm : find, isSorted;
+import std.algorithm : canFind, isSorted;
 import std.conv : to;
 import std.range : isInputRange, isForwardRange, hasLength, ElementEncodingType,
                    isAssociativeArray, empty;
@@ -14,9 +14,9 @@ import std.string : format;
 import std.traits : hasMember, isSomeString, isCallable,
                     isImplicitlyConvertible, Unqual, std;
 
-Assertion!T should(T)(T value)
+Assertion!T should(T)(T context)
 {
-  return new Assertion!T(value);
+  return new Assertion!T(context);
 }
 
 class Assertion(T)
@@ -24,12 +24,12 @@ class Assertion(T)
   static bool callable = isCallable!T;
   bool negated = false;
   string operator = "be";
-  T value;
+  T context;
 
   this() {};
-  this(T _value)
+  this(T _context)
   {
-    value = _value;
+    context = _context;
   }
 
   alias id be;
@@ -65,8 +65,8 @@ class Assertion(T)
              size_t line = __LINE__)
   {
     auto t_other = other.to!T;
-    ok(value == other, message(other), file, line);
-    return value;
+    ok(context == other, message(other), file, line);
+    return context;
   }
 
   T exist(string file = __FILE__, size_t line = __LINE__)
@@ -74,17 +74,17 @@ class Assertion(T)
     static if(isImplicitlyConvertible!(T, typeof(null)))
     {
       operator = "exist";
-      if(value == null)
+      if(context == null)
       {
         ok(false, message, file, line);
       }
     }
-    return value;
+    return context;
   }
 
   string message(U)(U other)
   {
-    return format("expected %s to %s%s%s", value.to!string,
+    return format("expected %s to %s%s%s", context.to!string,
                                            (negated ? "not " : ""),
                                            operator,
                                            (" " ~ other.to!string));
@@ -92,7 +92,7 @@ class Assertion(T)
 
   string message()
   {
-    return format("expected %s to %s%s", value.to!string,
+    return format("expected %s to %s%s", context.to!string,
                                          (negated ? "not " : ""),
                                          operator);
   }
@@ -100,13 +100,13 @@ class Assertion(T)
   bool biggerThan(U)(U other, string file = __FILE__, size_t line = __LINE__)
   {
     operator = "be bigger than";
-    return ok(value > other, message(other), file, line);
+    return ok(context > other, message(other), file, line);
   }
 
   bool smallerThan(U)(U other, string file = __FILE__, size_t line = __LINE__)
   {
     operator = "be smaller than";
-    return ok(value < other, message(other), file, line);
+    return ok(context < other, message(other), file, line);
   }
 
   static if(isForwardRange!T)
@@ -114,7 +114,7 @@ class Assertion(T)
     bool sorted(string file = __FILE__, size_t line = __LINE__)
     {
       operator = "be sorted";
-      return ok(value.isSorted, message, file, line);
+      return ok(context.isSorted, message, file, line);
     }
   }
 
@@ -122,18 +122,24 @@ class Assertion(T)
     void key(U)(U other, string file = __FILE__, size_t line = __LINE__)
     {
       operator = "have key";
-      ok(!(other !in value), message(other), file, line);
+      ok(!(other !in context), message(other), file, line);
     }
   }
 
-  static if(isInputRange!T)
+  static if(isInputRange!T || isAssociativeArray!T)
   {
-    U include(U)(U other, string file = __FILE__, size_t line = __LINE__)
+    U value(U)(U other, string file = __FILE__, size_t line = __LINE__)
     {
-      operator = "include";
-      ok(!find(value, other).empty, message(other), file, line);
+      static if(isAssociativeArray!T) auto pool = context.values;
+      else auto pool = context;
+
+      operator = "contain value";
+      ok(canFind(pool, other), message(other), file, line);
       return other;
     }
+
+    alias value include;
+    alias value contain;
   }
 
   static if(hasLength!T || hasMember!(T, "string") || isSomeString!T)
@@ -141,7 +147,7 @@ class Assertion(T)
     U length(U)(U len, string file = __FILE__, size_t line = __LINE__)
     {
       operator = "have length of";
-      ok(value.length == len, message(len), file, line);
+      ok(context.length == len, message(len), file, line);
       return len;
     }
   }
@@ -157,7 +163,7 @@ class Assertion(T)
          is(RegEx == StaticRegexOfT) ||
          isSomeString!RegEx)
     {
-      auto m = std.regex.match(value, re);
+      auto m = std.regex.match(context, re);
       operator = "match";
       ok(!m.empty, message(re), file, line);
       return m;
@@ -168,12 +174,12 @@ class Assertion(T)
   {
     bool True(string file = __FILE__, size_t line = __LINE__)
     {
-      return ok(value == true, message(true), file, line);
+      return ok(context == true, message(true), file, line);
     }
 
     bool False(string file = __FILE__, size_t line = __LINE__)
     {
-      return !ok(value == false, message(false), file, line);
+      return !ok(context == false, message(false), file, line);
     }
   }
 
@@ -184,7 +190,7 @@ class Assertion(T)
     {
       operator = "throw";
       bool thrown = false;
-      try value();
+      try context();
       catch(T) thrown = true;
       ok(thrown, message(), file, line);
     }

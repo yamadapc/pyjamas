@@ -121,11 +121,17 @@ void main()
         });
       });
 
-      describe(".include", {
+      describe(".value", {
         it("asserts for arrays containing elements", {
           auto a = new Assertion!(int[])([1, 2, 3, 4, 5, 6]);
           a.include(4);
           a.not.include(7);
+        });
+
+        it("asserts for associative arrays containing values", {
+          auto a = new Assertion!(int[string])(["something": 2, "else": 3]);
+          a.value(2);
+          a.not.value(4);
         });
 
         it("asserts for stirngs containing characters", {
