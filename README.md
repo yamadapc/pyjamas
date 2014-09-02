@@ -118,6 +118,13 @@ Asserts whether a forward range is sorted.
 [1, 2, 0, 4].should.not.be.sorted;
 ```
 
+#### `void key(U)(U other, string file = __FILE__, size_t line = __LINE__);`
+
+Asserts for an associative array to have a key equal to `other`.
+```d
+["something": 10].should.have.key("something");
+```
+
 #### `void Throw(T : Throwable)(string file = __FILE__, size_t line = __LINE__);`
 
 Asserts whether a callable object wrapped around the assertion throws an
