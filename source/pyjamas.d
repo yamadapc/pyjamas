@@ -109,7 +109,7 @@ class Assertion(T)
     return ok(context < other, message(other), file, line);
   }
 
-  static if(isForwardRange!T)
+  static if(isForwardRange!T && __traits(compiles, context.isSorted))
   {
     bool sorted(string file = __FILE__, size_t line = __LINE__)
     {
