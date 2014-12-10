@@ -13,6 +13,15 @@ void main()
     });
 
     describe("Assertion", {
+      it("can be instantiated for ranges of structs without `opCmp`", {
+        struct Test {
+          int a;
+          int b;
+        }
+
+        cast(void) [Test(2, 3)].should;
+      });
+
       describe(".message", {
         it("returns the correct message for binary operators", {
           auto a = new Assertion!int(10);
