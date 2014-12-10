@@ -1,2 +1,4 @@
 test
 .dub
+__test__pyjamas__
+libpyjamas.a
