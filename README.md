@@ -179,3 +179,6 @@ dub --config=test
 
 This code is licensed under the GPLv3 license. See the [LICENSE](LICENSE) file
 for more information.
+
+## Donations
+Would you like to buy me a beer? Send bitcoin to 3JjxJydvoJjTrhLL86LGMc8cNB16pTAF3y
