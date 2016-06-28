@@ -1,4 +1,4 @@
-language: d
+language: c
 script: dub --config=test
 
 install:
