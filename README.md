@@ -111,7 +111,7 @@ true.should.be.True;
 false.should.be.False;
 ```
 
-#### `bool sorted(strinf file = __FILE__, size_t line = __LINE__);`
+#### `bool sorted(string file = __FILE__, size_t line = __LINE__);`
 
 Asserts whether a forward range is sorted.
 ```d
@@ -161,7 +161,7 @@ chaining statements together:
 I know the documentation is still somewhat lacking, but it's better than
 nothing, I guess? :)
 
-Try looking at the test suite in [`tests/pyjamas_test.d`](/tests/pyjamas_test.d)
+Try looking at the test suite in [`tests/pyjamas_test.d`](/pyjamas_test.d)
 to see some "real world" testing of the library. Even though I'm using my
 testing framework [`bed`](https://github.com/yamadapc/bed), this library is
 supposed to be framework agnostic (you can use it with `unittest` if you want).
@@ -172,7 +172,7 @@ BTW, I'll be glad to accept help in writting the documentation.
 
 Run tests with:
 ```
-dub --config=test
+dub test
 ```
 
 ## License

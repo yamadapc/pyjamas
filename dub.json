@@ -10,20 +10,15 @@
     {
       "name": "pyjamas",
       "targetType": "library",
-      "sourcePaths": [
-        "source/"
+      "excludedSourceFiles": [
+        "source/pyjamas_test.d"
       ]
     },
     {
-      "name": "test",
-      "targetType": "executable",
-      "targetName": "test",
-      "sourcePaths": [
-        "tests/",
-        "source/"
-      ],
+      "name": "unittest",
+      "targetType": "library",
       "dependencies": {
-        "bed": ">=0.0.5"
+        "silly": "~>1.0.2"
       }
     }
   ]

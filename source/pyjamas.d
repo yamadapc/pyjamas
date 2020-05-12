@@ -11,8 +11,8 @@ import std.range : isInputRange, isForwardRange, hasLength, ElementEncodingType,
                    empty;
 import std.regex : Regex, StaticRegex;// & std.regex.match
 import std.string : format;
-import std.traits : hasMember, isSomeString, isCallable,
-                    isAssociativeArray, isImplicitlyConvertible, Unqual;
+import std.traits : hasMember, isSomeString, isCallable, isAssociativeArray,
+                    isImplicitlyConvertible, Unqual;
 
 Assertion!T should(T)(T context)
 {
@@ -152,6 +152,7 @@ class Assertion(T)
     }
   }
 
+  import std.regex : Regex, StaticRegex;
   static if(isSomeString!T)
   {
     private alias BasicElementOfT = Unqual!(ElementEncodingType!T);
@@ -163,7 +164,8 @@ class Assertion(T)
          is(RegEx == StaticRegexOfT) ||
          isSomeString!RegEx)
     {
-      auto m = std.regex.match(context, re);
+      import std.regex : match;
+      auto m = match(context, re);
       operator = "match";
       ok(!m.empty, message(re), file, line);
       return m;
