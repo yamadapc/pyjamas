@@ -1,8 +1,8 @@
 pyjamas
 =======
-[![Build Status](https://travis-ci.org/yamadapc/pyjamas.svg)](https://travis-ci.org/yamadapc/pyjamas)
-[![Gitter chat](https://badges.gitter.im/yamadapc/pyjamas.png)](https://gitter.im/yamadapc/pyjamas)
-[![Analytics](https://ga-beacon.appspot.com/UA-54450544-1/pyjamas/README)](https://github.com/igrigorik/ga-beacon)
+[![Build Status](https://travis-ci.org/Zardoz89/pijamas.svg?branch=master)](https://travis-ci.org/Zardoz89/pijamas)
+[![Build status](https://ci.appveyor.com/api/projects/status/7rwhguv6wfvyrufs/branch/master?svg=true)](https://ci.appveyor.com/project/Zardoz89/pijamas/branch/master)
+
 - - -
 
 <img src="/logo-big.png" align="left"/>
