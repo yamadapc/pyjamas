@@ -1,8 +1,8 @@
 {
   "name": "pyjamas",
   "description": "A BDD assertion library for D",
-  "copyright": "Copyright © 2014, Pedro Tacla Yamada",
-  "license": "GPLv3",
+  "copyright": "Copyright © 2020, Pedro Tacla Yamada",
+  "license": "MIT",
   "authors": [
     "Pedro Tacla Yamada"
   ],
