@@ -8,11 +8,11 @@ module pyjamas;
 import std.algorithm : canFind, isSorted;
 import std.conv : to;
 import std.range : isInputRange, isForwardRange, hasLength, ElementEncodingType,
-                   isAssociativeArray, empty;
+                   empty;
 import std.regex : Regex, StaticRegex;// & std.regex.match
 import std.string : format;
 import std.traits : hasMember, isSomeString, isCallable,
-                    isImplicitlyConvertible, Unqual, std;
+                    isAssociativeArray, isImplicitlyConvertible, Unqual;
 
 Assertion!T should(T)(T context)
 {
